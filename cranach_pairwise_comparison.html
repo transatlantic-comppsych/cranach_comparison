@@ -85,7 +85,7 @@
             const timeTaken = (endTime - startTime) / 1000;  // Calculate time in seconds
 
             results.push({
-                pair: `${pair.img1} vs ${pair.img2}`,
+                pair: `${pairs[currentPair].img1} vs ${pairs[currentPair].img2}`,
                 choice: choice,
                 position: position,
                 time: timeTaken
@@ -93,7 +93,7 @@
 
             currentPair++;
             if (currentPair < pairs.length) {
-                renderPair(pairs[currentPair]);
+                renderPair(pairs[currentPair]);  // Move to the next pair
             } else {
                 document.getElementById('comparison-container').innerHTML = '<h2>Thank you for your participation!</h2>';
                 document.getElementById('export-results').classList.remove('hidden');
