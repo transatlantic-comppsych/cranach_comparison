@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucas Cranach Painting Pairwise Comparison</title>
+    <title>Lucas Cranach Portrait Pairwise Comparison</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,8 +31,8 @@
     </style>
 </head>
 <body>
-    <h1>Lucas Cranach Painting Pairwise Comparison</h1>
-    <p>Select your preferred painting in each pair.</p>
+    <h1>Lucas Cranach Portrait Pairwise Comparison</h1>
+    <p>Select your preferred portrait in each pair.</p>
 
     <div id="comparison-container"></div>
     <button id="export-results" class="hidden">Export Results as CSV</button>
@@ -41,16 +41,16 @@
         let startTime;  // Variable to track the time
 
         const pairs = [
-            {img1: 'images/Adam_and_Eve.jpg', img2: 'images/Judgment_of_Paris.jpg'},
-            {img1: 'images/Venus.jpg', img2: 'images/Portrait_of_a_Lady.jpg'},
-            {img1: 'images/Three_Graces.jpg', img2: 'images/Cupid_Complaining_to_Venus.jpg'},
-            {img1: 'images/Adam_and_Eve.jpg', img2: 'images/Venus.jpg'},
-            {img1: 'images/Portrait_of_a_Lady.jpg', img2: 'images/Three_Graces.jpg'},
-            {img1: 'images/Adam_and_Eve.jpg', img2: 'images/Portrait_of_a_Lady.jpg'},
-            {img1: 'images/Cupid_Complaining_to_Venus.jpg', img2: 'images/Judgment_of_Paris.jpg'},
-            {img1: 'images/Venus.jpg', img2: 'images/Judgment_of_Paris.jpg'},
-            {img1: 'images/Cupid_Complaining_to_Venus.jpg', img2: 'images/Portrait_of_a_Lady.jpg'},
-            {img1: 'images/Three_Graces.jpg', img2: 'images/Judgment_of_Paris.jpg'}
+            {img1: 'images/Portrait_of_a_Lady.jpg', img2: 'images/Portrait_of_Johann_Friedrich.jpg'},
+            {img1: 'images/Portrait_of_a_Lady.jpg', img2: 'images/Portrait_of_Martin_Luther.jpg'},
+            {img1: 'images/Portrait_of_a_Lady.jpg', img2: 'images/Portrait_of_a_Young_Girl.jpg'},
+            {img1: 'images/Portrait_of_a_Lady.jpg', img2: 'images/Portrait_of_a_Saxon_Princess.jpg'},
+            {img1: 'images/Portrait_of_Johann_Friedrich.jpg', img2: 'images/Portrait_of_Martin_Luther.jpg'},
+            {img1: 'images/Portrait_of_Johann_Friedrich.jpg', img2: 'images/Portrait_of_a_Young_Girl.jpg'},
+            {img1: 'images/Portrait_of_Johann_Friedrich.jpg', img2: 'images/Portrait_of_a_Saxon_Princess.jpg'},
+            {img1: 'images/Portrait_of_Martin_Luther.jpg', img2: 'images/Portrait_of_a_Young_Girl.jpg'},
+            {img1: 'images/Portrait_of_Martin_Luther.jpg', img2: 'images/Portrait_of_a_Saxon_Princess.jpg'},
+            {img1: 'images/Portrait_of_a_Young_Girl.jpg', img2: 'images/Portrait_of_a_Saxon_Princess.jpg'}
         ];
 
         let results = [];
@@ -69,11 +69,11 @@
             container.innerHTML = `
                 <div class="pair-container">
                     <div>
-                        <img src="${pair.img1}" alt="Painting 1">
+                        <img src="${pair.img1}" alt="Portrait 1">
                         <button onclick="choosePainting('${pair.img1}', 'left')">Choose This</button>
                     </div>
                     <div>
-                        <img src="${pair.img2}" alt="Painting 2">
+                        <img src="${pair.img2}" alt="Portrait 2">
                         <button onclick="choosePainting('${pair.img2}', 'right')">Choose This</button>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
             const timeTaken = (endTime - startTime) / 1000;  // Calculate time in seconds
 
             results.push({
-                pair: `${pairs[currentPair].img1} vs ${pairs[currentPair].img2}`,
+                pair: `${pair.img1} vs ${pair.img2}`,
                 choice: choice,
                 position: position,
                 time: timeTaken
@@ -110,7 +110,7 @@
             const link = document.createElement("a");
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
-            link.setAttribute("download", "cranach_results.csv");
+            link.setAttribute("download", "cranach_portrait_results.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
