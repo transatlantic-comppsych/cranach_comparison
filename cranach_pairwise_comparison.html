@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucas Cranach Painting Comparison</title>
+    <title>Lucas Cranach Painting Pairwise Comparison</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,9 +15,9 @@
             margin-bottom: 20px;
         }
         .pair-container img {
-            width: 400px;  /* Set a fixed width */
-            height: 400px; /* Set a fixed height */
-            object-fit: cover; /* Ensures the image covers the area while preserving aspect ratio */
+            width: 400px;  /* Fixed width */
+            height: 400px; /* Fixed height */
+            object-fit: cover; /* Ensure the image covers the area while preserving aspect ratio */
         }
         .pair-container button {
             display: block;
@@ -38,6 +38,8 @@
     <button id="export-results" class="hidden">Export Results as CSV</button>
 
     <script>
+        let startTime;  // Variable to track the time
+
         const pairs = [
             {img1: 'images/Adam_and_Eve.jpg', img2: 'images/Judgment_of_Paris.jpg'},
             {img1: 'images/Venus.jpg', img2: 'images/Portrait_of_a_Lady.jpg'},
@@ -62,23 +64,33 @@
         }
 
         function renderPair(pair) {
+            startTime = new Date();  // Start the timer when a pair is rendered
             const container = document.getElementById('comparison-container');
             container.innerHTML = `
                 <div class="pair-container">
                     <div>
                         <img src="${pair.img1}" alt="Painting 1">
-                        <button onclick="choosePainting('${pair.img1}')">Choose This</button>
+                        <button onclick="choosePainting('${pair.img1}', 'left')">Choose This</button>
                     </div>
                     <div>
                         <img src="${pair.img2}" alt="Painting 2">
-                        <button onclick="choosePainting('${pair.img2}')">Choose This</button>
+                        <button onclick="choosePainting('${pair.img2}', 'right')">Choose This</button>
                     </div>
                 </div>
             `;
         }
 
-        function choosePainting(choice) {
-            results.push({pair: pairs[currentPair], choice: choice});
+        function choosePainting(choice, position) {
+            const endTime = new Date();  // Capture the time of the decision
+            const timeTaken = (endTime - startTime) / 1000;  // Calculate time in seconds
+
+            results.push({
+                pair: `${pairs[currentPair].img1} vs ${pairs[currentPair].img2}`,
+                choice: choice,
+                position: position,
+                time: timeTaken
+            });
+
             currentPair++;
             if (currentPair < pairs.length) {
                 renderPair(pairs[currentPair]);
@@ -88,24 +100,24 @@
             }
         }
 
+        document.getElementById('export-results').addEventListener('click', () => {
+            let csvContent = "Pair,Choice,Position,Time\n";  // Include headers for the new fields
+            results.forEach(result => {
+                csvContent += `${result.pair},${result.choice},${result.position},${result.time}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "cranach_results.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
         shuffle(pairs);  // Shuffle the pairs
         renderPair(pairs[currentPair]);  // Start with the first pair
-
-        document.getElementById('export-results').addEventListener('click', () => {
-    let csvContent = "Pair,Choice\n"; // Ensure proper CSV headers
-    results.forEach(result => {
-        csvContent += `${result.pair.img1} vs ${result.pair.img2},${result.choice}\n`;
-    });
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", "cranach_results.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
     </script>
 </body>
 </html>
